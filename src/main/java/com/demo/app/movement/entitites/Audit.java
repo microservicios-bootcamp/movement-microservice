@@ -1,4 +1,4 @@
-package com.demo.app.product.entities;
+package com.demo.app.movement.entitites;
 
 
 import lombok.Data;
@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -18,9 +17,9 @@ import java.util.Date;
 public class Audit {
     @CreatedDate
     @Field(name = "create_at")
-    private LocalDateTime createAt;
+    private Date createAt;
 
     @LastModifiedDate
     @Field(name = "update_at")
-    private LocalDateTime updateAt;
+    private Date updateAt;
 }

@@ -1,4 +1,4 @@
-package com.demo.app.product.config;
+package com.demo.app.movement.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

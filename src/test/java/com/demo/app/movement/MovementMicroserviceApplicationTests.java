@@ -1,10 +1,10 @@
-package com.demo.app.product;
+package com.demo.app.movement;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProductMicroserviceApplicationTests {
+class MovementMicroserviceApplicationTests {
 
     @Test
     void contextLoads() {

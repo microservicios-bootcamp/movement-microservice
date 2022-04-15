@@ -1,4 +1,4 @@
-package com.demo.app.product.entities;
+package com.demo.app.movement.models;
 
 public enum TypeCurrency {
     DOLARES,
