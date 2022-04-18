@@ -6,7 +6,9 @@ import reactor.core.publisher.Mono;
 
 public interface TransactionService {
     Flux<Transaction> findAll();
-    Mono<Transaction> save(Transaction transaction);
+    Mono<Transaction> saveTransactionOfCurrentAccount(Transaction transaction);
+    Mono<Transaction> saveTransactionOfSavingAccount(Transaction transaction);
+    Mono<Transaction> saveTransactionOfFixedTermAccount(Transaction transaction);
     Mono<Transaction> findById(String id);
     Mono<Transaction> update(Transaction transaction,String id);
     Mono<Void> delete(String id);

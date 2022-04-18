@@ -28,9 +28,17 @@ public class TransactionController {
         return transactionService.findById(id);
     }
 
-    @PostMapping
-    private ResponseEntity<Mono<Transaction>> save(@RequestBody Transaction transaction){
-        return ResponseEntity.ok(transactionService.save(transaction));
+    @PostMapping("/currentAccount")
+    private ResponseEntity<Mono<Transaction>> saveTransactionByCurrentAccount(@RequestBody Transaction transaction){
+        return ResponseEntity.ok(transactionService.saveTransactionOfCurrentAccount(transaction));
+    }
+    @PostMapping("/savingAccount")
+    private ResponseEntity<Mono<Transaction>> saveTransactionBySavingAccount(@RequestBody Transaction transaction){
+        return ResponseEntity.ok(transactionService.saveTransactionOfSavingAccount(transaction));
+    }
+    @PostMapping("/fixedTermAccount")
+    private ResponseEntity<Mono<Transaction>> saveTransactionByFixedTermAccount(@RequestBody Transaction transaction){
+        return ResponseEntity.ok(transactionService.saveTransactionOfFixedTermAccount(transaction));
     }
     @PutMapping("/{id}")
     private Mono<ResponseEntity<Transaction>> update(@RequestBody Transaction transaction, @PathVariable String id){

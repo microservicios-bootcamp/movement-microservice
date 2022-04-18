@@ -37,17 +37,23 @@ public class TransactionServiceImpl implements TransactionService {
                 retrieve().bodyToMono(FixedTermAccount.class);
     }
 
-    private Mono<CurrentAccount> updateCurrentAccount(String id){
-        return webClient.put().uri("/currentAccount/" + id).
-                retrieve().bodyToMono(CurrentAccount.class);
+    private Mono<CurrentAccount> updateCurrentAccount(CurrentAccount currentAccount){
+        return webClient.put().uri("/currentAccount/" + currentAccount.getId()).
+                body(Mono.just(currentAccount), CurrentAccount.class)
+                .retrieve()
+                .bodyToMono(CurrentAccount.class);
     }
-    private Mono<SavingAccount> updateSavingAccount(String id){
-        return webClient.put().uri("/savingAccount/" + id).
-                retrieve().bodyToMono(SavingAccount.class);
+    private Mono<SavingAccount> updateSavingAccount(SavingAccount savingAccount){
+        return webClient.put().uri("/savingAccount/" + savingAccount.getId()).
+                body(Mono.just(savingAccount), SavingAccount.class)
+                .retrieve()
+                .bodyToMono(SavingAccount.class);
     }
-    private Mono<FixedTermAccount> updateFixedTermAccount(String id){
-        return webClient.put().uri("/fixedTermAccount/" + id).
-                retrieve().bodyToMono(FixedTermAccount.class);
+    private Mono<FixedTermAccount> updateFixedTermAccount(FixedTermAccount fixedTermAccount){
+        return webClient.put().uri("/fixedTermAccount/" + fixedTermAccount.getId()).
+                body(Mono.just(fixedTermAccount), FixedTermAccount.class)
+                .retrieve()
+                .bodyToMono(FixedTermAccount.class);
     }
 
     @Override
@@ -56,12 +62,30 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Mono<Transaction> save(Transaction transaction) {
-        Mono<CurrentAccount> account = findCurrentAccountByDni(transaction.getDni(), transaction.getAccountNumber());
-        return account.flatMap(x-> {
+    public Mono<Transaction> saveTransactionOfCurrentAccount(Transaction transaction) {
+        Mono<CurrentAccount> account= findCurrentAccountByDni(transaction.getDni(), transaction.getAccountNumber()).flatMap(x->{
             x.setBalance(x.getBalance().add(transaction.getAmount().negate()));
-            return updateCurrentAccount(x.getId());
-        }).then(transactionRepository.save(transaction));
+            return updateCurrentAccount(x);
+        });
+        return account.then(transactionRepository.save(transaction));
+    }
+
+    @Override
+    public Mono<Transaction> saveTransactionOfSavingAccount(Transaction transaction) {
+        Mono<SavingAccount> account= findSavingAccountByDni(transaction.getDni(), transaction.getAccountNumber()).flatMap(x->{
+            x.setBalance(x.getBalance().add(transaction.getAmount().negate()));
+            return updateSavingAccount(x);
+        });
+        return account.then(transactionRepository.save(transaction));
+    }
+
+    @Override
+    public Mono<Transaction> saveTransactionOfFixedTermAccount(Transaction transaction) {
+        Mono<FixedTermAccount> account= findFixedTermAccountByDni(transaction.getDni(), transaction.getAccountNumber()).flatMap(x->{
+            x.setBalance(x.getBalance().add(transaction.getAmount().negate()));
+            return updateFixedTermAccount(x);
+        });
+        return account.then(transactionRepository.save(transaction));
     }
 
     @Override
