@@ -19,34 +19,34 @@ public class TransactionController {
     }
 
     @GetMapping
-    private ResponseEntity<Flux<Transaction>> findAll(){
+    public ResponseEntity<Flux<Transaction>> findAll(){
         return ResponseEntity.ok(transactionService.findAll());
     }
 
     @GetMapping("/{id}")
-    private Mono<Transaction> findById(@PathVariable String id){
+    public Mono<Transaction> findById(@PathVariable String id){
         return transactionService.findById(id);
     }
 
     @PostMapping("/currentAccount")
-    private ResponseEntity<Mono<Transaction>> saveTransactionByCurrentAccount(@RequestBody Transaction transaction){
+    public ResponseEntity<Mono<Transaction>> saveTransactionByCurrentAccount(@RequestBody Transaction transaction){
         return ResponseEntity.ok(transactionService.saveTransactionOfCurrentAccount(transaction));
     }
     @PostMapping("/savingAccount")
-    private ResponseEntity<Mono<Transaction>> saveTransactionBySavingAccount(@RequestBody Transaction transaction){
+    public ResponseEntity<Mono<Transaction>> saveTransactionBySavingAccount(@RequestBody Transaction transaction){
         return ResponseEntity.ok(transactionService.saveTransactionOfSavingAccount(transaction));
     }
     @PostMapping("/fixedTermAccount")
-    private ResponseEntity<Mono<Transaction>> saveTransactionByFixedTermAccount(@RequestBody Transaction transaction){
+    public ResponseEntity<Mono<Transaction>> saveTransactionByFixedTermAccount(@RequestBody Transaction transaction){
         return ResponseEntity.ok(transactionService.saveTransactionOfFixedTermAccount(transaction));
     }
     @PutMapping("/{id}")
-    private Mono<ResponseEntity<Transaction>> update(@RequestBody Transaction transaction, @PathVariable String id){
+    public Mono<ResponseEntity<Transaction>> update(@RequestBody Transaction transaction, @PathVariable String id){
         return transactionService.update(transaction,id).map(ResponseEntity::ok).defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    private Mono<ResponseEntity<Void>> delete(@PathVariable String id){
+    public Mono<ResponseEntity<Void>> delete(@PathVariable String id){
         return transactionService.delete(id).map(ResponseEntity::ok).defaultIfEmpty(ResponseEntity.notFound().build());
     }
 }
